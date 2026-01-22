@@ -60,7 +60,7 @@ The framework translates numerical error integrals into natural language constra
 
 ---
 
-## Final Results (SWE-bench)
+## Final Results (SWE-bench-mini bash-only Princeton/Lite Sample)
 
 | Model | Resolution Rate |
 | :--- | :--- |
