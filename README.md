@@ -30,7 +30,19 @@ To stabilize instruction tuning, the framework implements a formal feedback loop
 
 
 
-### 3. Symbolic Backpropagation
+### 3. Passive Aggressiveness Amplification
+
+The observation log (`patts.txt`) serves dual purposes:
+
+* **Knowledge Base**: Records actionable corrections 
+* **Frustration Counter**: Duplicate observations indicate persistent failures—the agent repeatedly ignores feedback
+* **Implicit Escalation**: The prompt optimizer receives the full observation history, including duplicates. Seeing the same rule 3-5 times signals ineffectiveness, automatically increasing aggressiveness in the next prompt rewrite
+
+**Mechanism**: Effective corrections disappear from future critiques (behavior fixed). Ineffective corrections accumulate as duplicates (behavior persists). This turns observation frequency into a natural severity signal without explicit duplicate-counting logic.
+
+
+
+### 4. Symbolic Backpropagation
 The framework translates numerical error integrals into natural language constraints. These "symbolic gradients" are backpropagated into the agent’s configuration in two layers:
 
 * **Evaluator Tuning**: Dynamically adjusts the "critic's" harshness to compensate for observed agent drift.
