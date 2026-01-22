@@ -36,6 +36,8 @@ The framework translates numerical error integrals into natural language constra
 * **Evaluator Tuning**: Dynamically adjusts the "critic's" harshness to compensate for observed agent drift.
 * **Policy Tuning**: Fundamental modification of the agent’s system instructions to shift its problem-solving priors (e.g., "Shift priority from abstraction to minimal execution").
 
+Essentially, the system uses the Integral term to not only anti-bias the current response via the evaluator, but to recursively tune the very engine being tuned—shifting the underlying policy rather than just correcting its symptoms.
+
 ---
 
 ## Performance & Convergence
