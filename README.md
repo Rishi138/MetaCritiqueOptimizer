@@ -43,7 +43,7 @@ The framework translates numerical error integrals into natural language constra
 ## Performance & Convergence
 
 * **System Convergence**: As the error integrals diminish, the controller’s aggression reduces, allowing the black-box optimization to converge on a stable, "ideal" system prompt. The instructions settle as the policy reaches equilibrium with the task environment.
-* **Natural Convergence**: The system identifies the point where further iteration yields diminishing returns—triggering early stopping to prevent "critique death spirals" and preserve latency.
+* **Natural Termination**: The system identifies the point where further iteration yields diminishing returns—triggering early stopping to prevent "critique death spirals" and preserve latency.
 * **Stateful Memory Loop**: A persistent observation log (`patts.txt`) acts as a long-term cell state, ensuring that learned policy adjustments carry over across different repository tasks.
 
 ---
