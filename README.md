@@ -26,7 +26,7 @@ To stabilize instruction tuning, the framework implements a formal feedback loop
 
 * **Proportional (P)**: Immediate correction based on the current error magnitude.
 * **Integral (I)**: Sums error history over a batch of tasks to neutralize systemic biases (e.g., if the model consistently over-engineers, the I-term forces a counter-bias).
-* **Derivative (D)**: Measures the rate of improvement. This allows the system to detect **Natural Convergence**—the point where further iteration yields diminishing returns—triggering early stopping to preserve latency and cost.
+* **Derivative (D)**: Measures the rate of improvement to identify the logarithmic "learning curve."
 
 
 
@@ -36,15 +36,25 @@ The framework translates numerical error integrals into natural language constra
 * **Evaluator Tuning**: Dynamically adjusts the "critic's" harshness to compensate for observed agent drift.
 * **Policy Tuning**: Fundamental modification of the agent’s system instructions to shift its problem-solving priors (e.g., "Shift priority from abstraction to minimal execution").
 
-Essentially, the system uses the Integral term to not only anti-bias the current response via the evaluator, but to recursively tune the very engine being tuned—shifting the underlying policy rather than just correcting its symptoms.
+> **Note**: The system uses the Integral term to not only anti-bias the current response via the evaluator, but to recursively tune the very engine being tuned—shifting the underlying policy rather than just correcting its symptoms.
 
 ---
 
 ## Performance & Convergence
 
-* **Natural Convergence**: The system is designed to identify the logarithmic "learning curve" of a model. It pursues improvement only to the point of a model's inherent capacity, preventing "critique death spirals."
+* **System Convergence**: As the error integrals diminish, the controller’s aggression reduces, allowing the black-box optimization to converge on a stable, "ideal" system prompt. The instructions settle as the policy reaches equilibrium with the task environment.
+* **Natural Convergence**: The system identifies the point where further iteration yields diminishing returns—triggering early stopping to prevent "critique death spirals" and preserve latency.
 * **Stateful Memory Loop**: A persistent observation log (`patts.txt`) acts as a long-term cell state, ensuring that learned policy adjustments carry over across different repository tasks.
-* **Benchmarked Efficiency**: MetaCritiqueOptimizer achieved a **78.3% resolution rate** on SWE-bench, representing a **74% relative improvement** over baseline models by automating the discovery of optimal instruction sets.
+
+---
+
+## Final Results (SWE-bench)
+
+| Model | Resolution Rate |
+| :--- | :--- |
+| **MetaCritiqueOptimizer** | **78.3%** |
+| Baseline o4-mini-model | 45.0% |
+| **Improvement** | **+74% Relative / +33.3 Pts** |
 
 ---
 
@@ -53,15 +63,3 @@ Essentially, the system uses the Integral term to not only anti-bias the current
 * **Gradient-Free Optimization**: Steers black-box models without weight updates.
 * **Test-Time Policy Shift**: Adapts the agent's "thinking" to the specific nuances of a codebase on the fly.
 * **Autonomous Remediation**: Automatically detects and corrects "paranoid" or "wasteful" coding patterns through integral feedback.
-
----
-
-## Final Results
-
-MetaCritiqueOptimizer: **78.3% resolved**
-
-Baseline o4-mini-model: **45.00% resolved**
-
-Relative Improvement: **74% Relative Improvement**
-
-Percentage Points: **33.3% Percentage-Point Improvement**
