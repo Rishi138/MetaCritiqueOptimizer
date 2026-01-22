@@ -4,7 +4,7 @@
 
 ---
 
-## The Core Thesis: Policy over Solution
+## Core Thesis: Policy over Solution
 Unlike standard agents that iterate on a single code block, **MetaCritiqueOptimizer** treats the "ideal solution" as a black-box target. The framework does not optimize for a specific string of code; it optimizes the **instructional latent space** that produces ideal solutions. It bridges the gap between a problem statement and an optimal output by treating the system prompt as a differentiable parameter.
 
 ---
