@@ -1,6 +1,6 @@
 # MetaCritiqueOptimizer
 
-**MetaCritiqueOptimizer** is a self-tuning agent framework that automatically optimizes its own critique system in real-time. By treating instruction prompts as controllable parameters in a feedback loop, the system eliminates manual prompt engineering while achieving state-of-the-art performance on repository-level coding tasks.
+**MetaCritiqueOptimizer** is a self-tuning agent framework that automatically optimizes its own critique system in real-time. By treating instruction prompts as controllable parameters in a feedback loop, the system eliminates manual prompt engineering while achieving high performance on repository-level coding tasks.
 
 ---
 
@@ -139,7 +139,7 @@ Seeing the same rule 3-5 times signals ineffectiveness, automatically increasing
 |:---------------------|:--------------------------------|
 | Parameters: Numeric weights | Parameters: Text prompts |
 | Error signal: Loss value | Error signal: Critique scores |
-| Gradient: ∂Loss/∂Weight | "Gradient": Error statistics + observations |
+| Gradient: ∂Loss/∂Weight | "Gradient": Error integrations + observations |
 | Update: W -= lr * gradient | Update: LLM rewrites prompt based on errors |
 | Mechanism: Chain rule + calculus | Mechanism: Pattern recognition + language |
 
