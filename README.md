@@ -356,6 +356,3 @@ The framework shows that **second-order optimizationâ€”optimizing the optimizerâ
 **Data Source**: [SWE-bench Official Leaderboard](https://www.swebench.com/)
 
 ---
-
-[Add citation format here]
-```
