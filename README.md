@@ -6,11 +6,11 @@
 
 ## Quick Results
 
-| System | Resolution Rate | Improvement |
-|:-------|:----------------|:------------|
-| Baseline o4-mini | 45.0% | — |
-| V1: Simple Critique | 63.2% | +18.2 pts |
-| **V2: MetaCritiqueOptimizer** | **78.3%** | **+33.3 pts (+74%)** |
+| System | Resolution Rate | Percentage Point Improvement | Relative Improvement |
+|:-------|:----------------|:----------------------------|:---------------------|
+| Baseline o4-mini | 45.0% | — | — |
+| V1: Simple Critique | 63.2% | +18.2 pts | +40.4% |
+| **V2: MetaCritiqueOptimizer** | **78.3%** | **+33.3 pts** | **+74.0%** |
 
 **SWE-bench-mini bash-only** (Princeton/Lite Sample)
 
@@ -240,6 +240,14 @@ While V2 increases API calls vs. baseline, it **reduces expensive o4-mini retrie
 | **V2: MetaCritiqueOptimizer** | **78.3%** | **+33.3 pts** | **+15.1 pts** |
 | **Relative Improvement** | **+74%** | — | **+24%** |
 
+### Relative improvements from initial baseline
+
+| System | Resolution Rate | Percentage Point Improvement | Relative Improvement |
+|:-------|:----------------|:----------------------------|:---------------------|
+| Baseline o4-mini | 45.0% | — | — |
+| V1: Simple Critique | 63.2% | +18.2 pts | +40.4% |
+| **V2: MetaCritiqueOptimizer** | **78.3%** | **+33.3 pts** | **+74.0%** |
+
 ### Individual Model Performance
 - o4-mini alone: **45.0%** resolved
 - gpt-5-mini alone: **59.8%** resolved
@@ -259,12 +267,12 @@ While V2 increases API calls vs. baseline, it **reduces expensive o4-mini retrie
 | **Total** | **$22.55** |
 
 ### Production Trade-offs
-✅ **Advantages:**
+ **Advantages:**
 - Reduced expensive model retries (fewer bad solutions)
 - Automatic prompt optimization (no manual engineering)  
 - Early stopping prevents runaway costs
 
-⚠️ **Considerations:**
+ **Considerations:**
 - Increased latency per task (iterative critique)
 - Higher total API calls (but fewer wasted calls)
 
