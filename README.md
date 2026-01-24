@@ -24,7 +24,7 @@ Simple recursive self-critique improves agent performance—but it requires cons
 * **Too lenient** → Incomplete solutions, missed edge cases, failing tests
 * **Static prompts** → Can't adapt to different codebases or problem types
 
-Our baseline critique system (V1) improved o4-mini from **45% → 63%** on SWE-bench bash-only, but hit a ceiling due to these tuning challenges.
+The baseline critique system (V1) improved o4-mini from **45% → 63%** on SWE-bench bash-only, but hit a ceiling due to these tuning challenges.
 
 ---
 
@@ -39,7 +39,7 @@ Traditional approach:
 Problem → Agent → Solution → Critique → Better Solution
 ```
 
-Our approach:
+The approach:
 ```
 Problem → Agent → Solution → Critique → Better Critique System and Better Agent System → Better Solution
 ```
@@ -69,7 +69,7 @@ The framework tracks performance across four bidirectional dimensions scored fro
 | **Simplicity** | Messy, convoluted code | Clean, readable commands | Over-engineered, unnecessary complexity |
 | **Optimization** | Wasteful operations | Reasonably efficient | Premature optimization, clever but complex |
 
-**Why bidirectional matters**: In V1, it was observed that critique systems often push agents too far in one direction. A critique that successfully eliminates bugs might inadvertently encourage paranoid validation. Bidirectional tracking lets us detect and correct these overcorrections.
+**Why bidirectional matters**: In V1, it was observed that critique systems often push agents too far in one direction. A critique that successfully eliminates bugs might inadvertently encourage paranoid validation. Bidirectional tracking lets one detect and correct these overcorrections.
 
 ---
 
@@ -92,7 +92,7 @@ error_accumulations["correctness"] += crit_scores["crit_correctness_score"]
 #### Derivative (D)
 Measures the rate of improvement to identify diminishing returns.
 
-**Note:** This measures change in *distance to target* (`abs(prev) - abs(current)`) rather than a traditional derivative. Discretely, however, it is still measuring the rate of change in the error. Since our target is 0, magnitude reduction is what is being looked for, regardless of direction—moving from +50→+30 or -50→-30 both represent the same 20-point improvement toward our goal.
+**Note:** This measures change in *distance to target* (`abs(prev) - abs(current)`) rather than a traditional derivative. Discretely, however, it is still measuring the rate of change in the error. Since the target is 0, magnitude reduction is what is being looked for, regardless of direction—moving from +50→+30 or -50→-30 both represent the same 20-point improvement toward the goal.
 
 Used for early stopping to prevent "critique death spirals" and unnecessary API costs.
 ```python
@@ -143,7 +143,7 @@ Seeing the same rule 3-5 times signals ineffectiveness, automatically increasing
 | Update: W -= lr * gradient | Update: LLM rewrites prompt based on errors |
 | Mechanism: Chain rule + calculus | Mechanism: Pattern recognition + language |
 
-**Why "symbolic"?** One can't compute numeric gradients through text (prompts aren't differentiable). Instead, MetaCritiqueOptimizer uses symbolic reasoning: the system interprets error patterns and generates natural language "corrections" that serve the same purpose as gradients—they tell us which direction to adjust the parameters.
+**Why "symbolic"?** One can't compute numeric gradients through text (prompts aren't differentiable). Instead, MetaCritiqueOptimizer uses symbolic reasoning: the system interprets error patterns and generates natural language "corrections" that serve the same purpose as gradients—they tell which direction to adjust the parameters.
 
 **The key difference:** Traditional backprop traces exactly how each weight contributes to the loss (chain rule). It can't be done with prompts. Instead, MetaCritiqueOptimizer accumulates error statistics and uses an LLM to infer what prompt changes would reduce those errors. It's gradient-free optimization guided by linguistic feedback.
 
