@@ -307,7 +307,7 @@ While V2 increases API calls vs. baseline, it **reduces expensive o4-mini retrie
 
 ## Key Capabilities
 
-**Gradient-Free Optimization**  
+**Gradient-Free Optimization (Black-box optimization)**  
 Steers black-box models without weight updates or fine-tuning
 
 **Test-Time Policy Shift**  
