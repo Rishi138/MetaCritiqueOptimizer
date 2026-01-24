@@ -12,7 +12,7 @@
 | V1: Simple Critique | 63.2% | +18.2 pts | +40.4% |
 | **V2: MetaCritiqueOptimizer** | **78.3%** | **+33.3 pts** | **+74.0%** |
 
-**SWE-bench-mini bash-only** (Princeton/Lite Sample)
+**SWE-bench-mini bash-only** (Princeton/Lite)
 
 ---
 
@@ -250,7 +250,7 @@ While V2 increases API calls vs. baseline, it **reduces expensive o4-mini retrie
 
 ## Final Results
 
-### SWE-bench-mini bash-only (Princeton/Lite Sample)
+### SWE-bench-mini bash-only (Princeton/Lite)
 
 | System | Resolution Rate | vs. Baseline | vs. V1 |
 |:-------|:----------------|:-------------|:-------|
