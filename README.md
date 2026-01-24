@@ -92,7 +92,7 @@ error_accumulations["correctness"] += crit_scores["crit_correctness_score"]
 #### Derivative (D)
 Measures the rate of improvement to identify diminishing returns.
 
-**Note:** This measures change in *distance to target* (`abs(prev) - abs(current)`) rather than a traditional derivative. Discretely, however, we are still measuring the rate of change in the error. Since our target is 0, we care about magnitude reduction regardless of direction—moving from +50→+30 or -50→-30 both represent the same 20-point improvement toward our goal.
+**Note:** This measures change in *distance to target* (`abs(prev) - abs(current)`) rather than a traditional derivative. Discretely, however, it is still measuring the rate of change in the error. Since our target is 0, magnitude reduction is what is being looked for, regardless of direction—moving from +50→+30 or -50→-30 both represent the same 20-point improvement toward our goal.
 
 Used for early stopping to prevent "critique death spirals" and unnecessary API costs.
 ```python
@@ -143,9 +143,9 @@ Seeing the same rule 3-5 times signals ineffectiveness, automatically increasing
 | Update: W -= lr * gradient | Update: LLM rewrites prompt based on errors |
 | Mechanism: Chain rule + calculus | Mechanism: Pattern recognition + language |
 
-**Why "symbolic"?** We can't compute numeric gradients through text (prompts aren't differentiable). Instead, we use symbolic reasoning: the system interprets error patterns and generates natural language "corrections" that serve the same purpose as gradients—they tell us which direction to adjust the parameters.
+**Why "symbolic"?** One can't compute numeric gradients through text (prompts aren't differentiable). Instead, MetaCritiqueOptimizer uses symbolic reasoning: the system interprets error patterns and generates natural language "corrections" that serve the same purpose as gradients—they tell us which direction to adjust the parameters.
 
-**The key difference:** Traditional backprop traces exactly how each weight contributes to the loss (chain rule). We can't do that with prompts. Instead, we accumulate error statistics and use an LLM to infer what prompt changes would reduce those errors. It's gradient-free optimization guided by linguistic feedback.
+**The key difference:** Traditional backprop traces exactly how each weight contributes to the loss (chain rule). It can't be done with prompts. Instead, MetaCritiqueOptimizer accumulates error statistics and uses an LLM to infer what prompt changes would reduce those errors. It's gradient-free optimization guided by linguistic feedback.
 
 ---
 
@@ -202,7 +202,7 @@ From V1 code comments and testing:
 # "Critique death spiral"
 ```
 
-We observed that:
+It was observed that:
 1. **Over-critical prompts** caused the agent to add unnecessary error handling, breaking working solutions
 2. **Under-critical prompts** let incomplete solutions pass, failing tests
 3. **Manual tuning was fragile** across different repositories and problem types
