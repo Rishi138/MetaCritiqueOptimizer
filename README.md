@@ -92,9 +92,11 @@ error_accumulations["correctness"] += crit_scores["crit_correctness_score"]
 #### Derivative (D)
 Measures the rate of improvement to identify diminishing returns.
 
+**Note:** This measures change in *distance to target* (`abs(prev) - abs(current)`) rather than a traditional derivative. Discretely, however, we are still measuring the rate of change in the error. Since our target is 0, we care about magnitude reduction regardless of direction—moving from +50→+30 or -50→-30 both represent the same 20-point improvement toward our goal.
+
 Used for early stopping to prevent "critique death spirals" and unnecessary API costs.
 ```python
-# Derivative (rate of change)
+# Rate of change in distance to target
 improvement = abs(prev_score) - abs(current_score)
 
 # Control decision
@@ -102,7 +104,7 @@ if avg_improvement < 4:
     stop_iteration()  # Diminishing returns detected
 ```
 
-**Why PID**: In V1,  the critique harshness was manually tuned through trial and error. The PID formulation automates this by treating prompt optimization like a control system—measuring error, accumulating bias signals, and adjusting aggressiveness dynamically.
+**Why PID**: In V1, the critique harshness was manually tuned through trial and error. The PID formulation automates this by treating prompt optimization like a control system—measuring error, accumulating bias signals, and adjusting aggressiveness dynamically.
 
 ---
 
@@ -131,7 +133,24 @@ Seeing the same rule 3-5 times signals ineffectiveness, automatically increasing
 
 ### 4. Symbolic Backpropagation
 
-The framework translates numerical-error integrals into natural-language constraints. These "symbolic gradients" are backpropagated into the agent's configuration in two layers:
+**Why "backpropagation"?** In neural networks, backpropagation optimizes numeric parameters (weights) by computing gradients that show how to adjust each parameter to reduce error. This framework does something analogous, but in language space:
+
+| Traditional Backprop | Symbolic Backprop (This System) |
+|:---------------------|:--------------------------------|
+| Parameters: Numeric weights | Parameters: Text prompts |
+| Error signal: Loss value | Error signal: Critique scores |
+| Gradient: ∂Loss/∂Weight | "Gradient": Error statistics + observations |
+| Update: W -= lr * gradient | Update: LLM rewrites prompt based on errors |
+| Mechanism: Chain rule + calculus | Mechanism: Pattern recognition + language |
+
+**Why "symbolic"?** We can't compute numeric gradients through text (prompts aren't differentiable). Instead, we use symbolic reasoning: the system interprets error patterns and generates natural language "corrections" that serve the same purpose as gradients—they tell us which direction to adjust the parameters.
+
+**The key difference:** Traditional backprop traces exactly how each weight contributes to the loss (chain rule). We can't do that with prompts. Instead, we accumulate error statistics and use an LLM to infer what prompt changes would reduce those errors. It's gradient-free optimization guided by linguistic feedback.
+
+---
+
+The framework translates numerical error integrals into natural-language constraints, 
+then applies these constraints in two layers:
 
 #### Layer 1: Evaluator Tuning
 Dynamically adjusts the critic's harshness to compensate for observed agent drift.
