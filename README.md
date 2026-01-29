@@ -109,9 +109,7 @@ if avg_improvement < 4:
 ---
 
 ### 3. Passive Aggressiveness Amplification
-
 The observation log (`patts.txt`) serves dual purposes:
-
 * **Knowledge Base**: Records actionable corrections (e.g., "Escape special characters in grep patterns")
 * **Frustration Counter**: Duplicate observations indicate persistent failures—the agent repeatedly ignores feedback
 * **Implicit Escalation**: The prompt optimizer receives the full observation history, including duplicates
@@ -121,13 +119,23 @@ The observation log (`patts.txt`) serves dual purposes:
 - Ineffective corrections accumulate as duplicates (behavior persists)
 - Observation frequency becomes a natural severity signal
 
-**Example Escalation**:
+**Example**:
 ```
-Occurrence 1: "Check file existence before sed operations"
-Occurrence 5: "CRITICAL: Always validate file paths before sed/awk operations"
+# After first attempt, patts.txt contains:
+"Check file existence before sed operations"
+
+# If behavior persists after 5 attempts, patts.txt contains:
+"Check file existence before sed operations"
+"Check file existence before sed operations"
+"Check file existence before sed operations"
+"Check file existence before sed operations"
+"Check file existence before sed operations"
+
+# Prompt optimizer sees 5 duplicates → infers ineffectiveness → generates:
+new_sys_prompt: "CRITICAL: Always validate file paths before sed/awk operations"
 ```
 
-Seeing the same rule 3-5 times signals ineffectiveness, automatically increasing aggressiveness in the next prompt rewrite—without explicit duplicate-counting logic.
+Seeing the same rule 3-5 times signals ineffectiveness, automatically increasing aggressiveness in the next prompt rewrite—without explicit duplicate-counting logic, also increases severity in explicit model prompting.
 
 ---
 
