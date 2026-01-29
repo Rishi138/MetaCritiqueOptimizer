@@ -330,6 +330,10 @@ Eliminates the prompt engineering trial-and-error cycle that plagued V1
 **Cost-Aware**  
 Derivative-based early stopping prevents unnecessary critique cycles while maintaining quality
 
+## Generalization Potential
+
+The framework is task-agnostic by design—bidirectional error tracking, PID-governed control loops, and symbolic backpropagation operate independently of bash-specific knowledge. In theory, MetaCritiqueOptimizer should generalize to other domains (writing, analysis, UI generation) with minor prompt tuning to adapt the evaluation dimensions.
+
 ---
 
 ## Implementation Notes
