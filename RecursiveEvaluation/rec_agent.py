@@ -154,11 +154,10 @@ def optimize_prompts():
     global curr_batch
     global old_sys
     global old_eval
-    global sys_prompt_req
 
     aggressiveness = {}
 
-    with open("C:/Users/rajal/PycharmProjects/SageDebugger/RecursiveEvaluation/patts.txt","r") as f:
+    with open("patts.txt","r") as f:
         patts = f.read().split("\n")
     print(patts)
 
@@ -224,7 +223,6 @@ class SelfCritiqueScore(BaseModel):
 
 
 async def self_critique(ctx: RunContextWrapper[Any], args: str) -> dict:
-    global evaluator_mode
     global curr_batch
     global error_accumulations
     print("Self Critique Called")
@@ -283,7 +281,7 @@ async def self_critique(ctx: RunContextWrapper[Any], args: str) -> dict:
 
     obs = score["observation"]
     obs = "\n"+obs
-    with open("C:/Users/rajal/PycharmProjects/SageDebugger/RecursiveEvaluation/patts.txt","a") as f:
+    with open("patts.txt","a") as f:
         f.write(obs)
 
     # gen improv scores
@@ -399,5 +397,6 @@ def new_response(question):
     return answer
 
 # 6
+
 
 
