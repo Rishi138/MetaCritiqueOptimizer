@@ -44,7 +44,7 @@ The approach:
 Problem → Agent → Solution → Critique → Better Critique System and Better Agent System → Better Solution
 ```
 
-By treating system prompts as differentiable parameters (in natural language space), MetaCritiqueOptimizer enables gradient-free optimization of the agent's problem-solving policy itself.
+By treating system prompts as optimizable parameters (in natural language space), MetaCritiqueOptimizer enables gradient-free optimization of the agent's problem-solving policy itself.
 
 ---
 
