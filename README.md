@@ -141,7 +141,7 @@ Seeing the same rule 3-5 times signals ineffectiveness, automatically increasing
 
 ### 4. Symbolic Backpropagation
 
-**Why "backpropagation"?** In neural networks, backpropagation optimizes numeric parameters (weights) by computing gradients that show how to adjust each parameter to reduce error. This framework does something analogous, but in language space:
+**Why "backpropagation"?** In neural networks, backpropagation optimizes numeric parameters (weights) by computing gradients that show how to adjust each parameter to reduce error. This framework does something analogous, but in language space. Backpropagation optimizes numeric parameters using exact gradients. Symbolic backpropagation operates on the same principle — errors flow backwards to adjust upstream parameters — but in language space, where exact gradients are impossible. The LLM substitutes for the chain rule.
 
 | Traditional Backprop | Symbolic Backprop (This System) |
 |:---------------------|:--------------------------------|
