@@ -4,7 +4,6 @@ from typing import Any
 from openai import OpenAI
 import asyncio
 
-
 error_accumulations = {
     "correctness": 0,
     "scope": 0,
@@ -51,7 +50,7 @@ Evaluate the response with these following categories:
    -100: Wasteful, redundant operations
    0: Reasonably efficient
    +100: Premature optimization, clever but complex
-   
+
 Provide feedback accordingly
 
 After evaluation, generate ONE observation: a single-line actionable rule addressing the most critical issue found.
@@ -144,8 +143,9 @@ class PromptOpt(BaseModel):
 
 
 inj = "\nDYNAMIC SECTION (WHAT YOU ARE REPLACING):\n"
-old_sys = sys_prompt_req+inj
-old_eval = evaluator_mode+inj
+old_sys = sys_prompt_req + inj
+old_eval = evaluator_mode + inj
+
 
 def optimize_prompts():
     global sys_prompt
@@ -154,17 +154,18 @@ def optimize_prompts():
     global curr_batch
     global old_sys
     global old_eval
+    global sys_prompt_req
 
     aggressiveness = {}
 
-    with open("patts.txt","r") as f:
+    with open("patts.txt", "r") as f:
         patts = f.read().split("\n")
     print(patts)
 
     for key in error_accumulations:
         avg_error = error_accumulations[key] / curr_batch
         avg_error = abs(avg_error)
-        scaled_avg = avg_error/10
+        scaled_avg = avg_error / 10
         aggressiveness[key] = scaled_avg
 
     response = critique_client.responses.parse(
@@ -228,7 +229,7 @@ async def self_critique(ctx: RunContextWrapper[Any], args: str) -> dict:
     print("Self Critique Called")
     curr_batch += 1
     parsed = SelfCritiqueArgs.model_validate_json(args)
-    with open("patts.txt","r") as f:
+    with open("patts.txt", "r") as f:
         patts = f.read()
     prev_scores = {
         "prev_correctness_score": parsed.prev_correctness_score,
@@ -280,8 +281,8 @@ async def self_critique(ctx: RunContextWrapper[Any], args: str) -> dict:
     }
 
     obs = score["observation"]
-    obs = "\n"+obs
-    with open("patts.txt","a") as f:
+    obs = "\n" + obs
+    with open("patts.txt", "a") as f:
         f.write(obs)
 
     # gen improv scores
@@ -348,7 +349,7 @@ async def self_critique(ctx: RunContextWrapper[Any], args: str) -> dict:
     total_error = 0
     for key in error_accumulations:
         total_error += abs(error_accumulations[key])
-    average = total_error/curr_batch
+    average = total_error / curr_batch
 
     if average > 80:
         optimize_prompts()
@@ -376,17 +377,18 @@ self_critique_tool = FunctionTool(
 )
 
 # Agent
-agent = Agent(
-    name="Sage",
-    model="o4-mini-2025-04-16",
-    tools=[
-        self_critique_tool,
-    ],
-    instructions=sys_prompt
-)
-
-
 async def response_gen(question):
+    global sys_prompt
+    global self_critique_tool
+    agent = Agent(
+        name="Sage",
+        model="o4-mini-2025-04-16",
+        tools=[
+            self_critique_tool,
+        ],
+        instructions=sys_prompt
+    )
+
     result = await Runner.run(agent, question)
     return result.final_output
 
@@ -397,6 +399,5 @@ def new_response(question):
     return answer
 
 # 6
-
 
 
